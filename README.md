@@ -1,27 +1,49 @@
-# Credit_Risk_Management
-
-# German Credit Risk Modeling using Machine Learning
+# German Credit Risk Modeling — Probability of Default (PD) Model
 
 ## Project Overview
 
-This project focuses on building and optimizing a Probability of Default (PD) model using the German Credit Risk dataset.
+This project focuses on building a **Probability of Default (PD) Model** using the German Credit Risk dataset.
 
-The objective is to classify borrowers into:
-- Good Credit Risk
-- Bad Credit Risk
+The objective of the project is to estimate the probability that a borrower may default on a loan obligation using machine learning techniques.
 
-using machine learning techniques and evaluate the model using:
-- ROC-AUC Score
-- Gini Coefficient
-
-The project demonstrates a complete credit risk modeling workflow including:
+The project follows a complete credit risk modeling workflow including:
 - Data Cleaning
 - Exploratory Data Analysis (EDA)
 - Feature Engineering
 - One-Hot Encoding
 - Random Forest Classification
-- Model Optimization
-- Credit Risk Evaluation Metrics
+- PD Estimation
+- ROC-AUC Evaluation
+- Gini Coefficient Analysis
+
+---
+
+# What is Probability of Default (PD)?
+
+Probability of Default (PD) represents the likelihood that a borrower will fail to meet debt obligations within a specified time horizon.
+
+PD is one of the most important concepts in:
+- Credit Risk Analytics
+- Basel Framework
+- Risk Management
+- Banking Analytics
+- IFRS 9 Modeling
+
+Mathematically:
+
+```math
+0 \leq PD \leq 1
+```
+
+Where:
+- `PD = 0` → No default risk
+- `PD = 1` → Certain default
+
+In this project:
+- `good borrower = 0`
+- `bad borrower = 1`
+
+The machine learning model estimates the probability that a borrower belongs to the default class.
 
 ---
 
@@ -33,21 +55,27 @@ Dataset Used:
 Target Variable:
 - `Risk`
 
-Mapping:
-- `good → 0`
-- `bad → 1`
+Target Mapping:
+
+```python
+df['target'] = df['Risk'].map({'bad': 1, 'good': 0})
+```
+
+Where:
+- `1 = Default`
+- `0 = Non-Default`
 
 ---
 
-# Problem Statement
+# Business Objective
 
-Financial institutions need to estimate the probability that a borrower may default on a loan.
+The primary objective is to build a PD model that helps financial institutions:
 
-This project aims to:
-- predict borrower default risk
-- identify risky customers
-- improve model discriminatory power
-- evaluate credit risk using industry-standard metrics
+- identify high-risk borrowers
+- reduce credit losses
+- improve underwriting decisions
+- estimate expected loss
+- support Basel capital requirements
 
 ---
 
@@ -66,8 +94,6 @@ This project aims to:
 
 ## 1. Data Collection
 
-The dataset was loaded using pandas.
-
 ```python
 df = pd.read_csv("/content/german_credit_data.csv")
 ```
@@ -80,9 +106,7 @@ df = pd.read_csv("/content/german_credit_data.csv")
 df['target'] = df['Risk'].map({'bad': 1, 'good': 0})
 ```
 
-Where:
-- `1 = Default`
-- `0 = Non-Default`
+The target variable represents borrower default status.
 
 ---
 
@@ -102,25 +126,31 @@ df.drop(columns='Unnamed: 0', inplace=True)
 
 ---
 
-## 4. Exploratory Data Analysis
+## 4. Exploratory Data Analysis (EDA)
 
-Boxplots were used to analyze:
+EDA was performed using:
+- Boxplots
+- Descriptive Statistics
+- Outlier Analysis
+
+Variables analyzed:
 - Duration
 - Credit Amount
 - Age
 
-This helped identify:
-- outliers
-- skewness
-- exposure distribution
+The analysis helped understand:
+- borrower behavior
+- loan distribution
+- exposure concentration
+- potential outliers
 
 ---
 
 ## 5. Feature Engineering
 
-Categorical variables were encoded using One-Hot Encoding.
+Categorical variables were transformed using One-Hot Encoding.
 
-Features encoded:
+Encoded Features:
 - Sex
 - Job
 - Housing
@@ -128,14 +158,16 @@ Features encoded:
 - Checking account
 - Purpose
 
-Optimized model excluded:
+The optimized model excluded:
 - Purpose
+
+to improve model performance.
 
 ---
 
-## 6. Model Building
+## 6. PD Model Development
 
-A Random Forest Classifier was used.
+A Random Forest Classifier was used for PD estimation.
 
 ```python
 model = RandomForestClassifier(
@@ -152,38 +184,42 @@ The dataset was split into:
 train_test_split(test_size=0.2)
 ```
 
+The model estimates the probability that a borrower defaults.
+
 ---
 
-# Model Evaluation Metrics
+# PD Model Evaluation
 
 The model was evaluated using:
 
 ## ROC-AUC Score
 
-Measures the model's ability to distinguish between:
-- good borrowers
-- bad borrowers
+ROC-AUC measures the model's ability to distinguish between:
+- default borrowers
+- non-default borrowers
 
-Higher ROC-AUC indicates better discrimination.
+Higher ROC-AUC indicates stronger discriminatory power.
 
 ---
 
 ## Gini Coefficient
 
-Widely used in:
-- Banking
-- Basel Framework
-- Credit Risk Analytics
+The Gini coefficient is a widely used metric in:
+- banking
+- credit scoring
+- Basel risk models
 
 Formula:
 
 ```math
-Gini = (2 × ROC-AUC) - 1
+Gini = (2 \times ROC\text{-}AUC) - 1
 ```
+
+Higher Gini indicates better credit risk separation.
 
 ---
 
-# Initial Model Performance
+# Initial PD Model Performance
 
 | Metric | Value |
 |---|---|
@@ -192,7 +228,7 @@ Gini = (2 × ROC-AUC) - 1
 
 ---
 
-# Optimized Model Performance
+# Optimized PD Model Performance
 
 | Metric | Value |
 |---|---|
@@ -201,59 +237,46 @@ Gini = (2 × ROC-AUC) - 1
 
 ---
 
-# Improvement Achieved
+# Model Improvement
 
-The optimized model improved predictive performance by:
-- removing less informative variables
-- improving feature selection
-- handling categorical variables more effectively
+The optimized PD model achieved better performance through:
+- improved feature selection
+- removal of less informative variables
+- improved encoding strategy
+- better handling of categorical variables
 
-The optimized model achieved:
-- higher ROC-AUC
-- higher Gini score
-- better discriminatory power
-
----
-
-# Business Interpretation
-
-A higher Gini coefficient indicates:
-- stronger risk separation
-- better borrower classification
-- improved credit underwriting capability
-
-The optimized model demonstrates improved ability to:
-- identify high-risk borrowers
-- estimate default probability
-- support credit decision-making
+The optimized model demonstrated:
+- improved ROC-AUC
+- higher Gini coefficient
+- stronger borrower discrimination
 
 ---
 
-# Credit Risk Concepts
+# Credit Risk Interpretation
 
-## Probability of Default (PD)
+A borrower with:
+- higher predicted probability → higher PD
+- lower predicted probability → lower PD
 
-Probability that a borrower defaults on obligations.
-
----
-
-## Exposure at Default (EAD)
-
-Total exposure at the time of borrower default.
-
----
-
-## Loss Given Default (LGD)
-
-Percentage loss incurred after borrower default.
+The model helps identify:
+- risky customers
+- high default segments
+- portfolio vulnerabilities
 
 ---
 
-## Expected Loss Formula
+# Expected Loss Framework
+
+The PD model can be integrated into Expected Loss estimation.
 
 ```math
 EL = PD \times LGD \times EAD
 ```
+
+Where:
+- `PD` = Probability of Default
+- `LGD` = Loss Given Default
+- `EAD` = Exposure At Default
 
 ---
 
@@ -271,33 +294,30 @@ EL = PD \times LGD \times EAD
 
 Possible enhancements:
 - Logistic Regression Scorecard
-- XGBoost
-- Hyperparameter Tuning
-- SHAP Explainability
-- Feature Importance Analysis
-- Cross Validation
-- Probability Calibration
-- Basel PD Modeling Framework
 - WoE Encoding
-- IV Analysis
+- Information Value (IV)
+- Hyperparameter Tuning
+- XGBoost
+- Cross Validation
+- SHAP Explainability
+- Probability Calibration
+- Basel IRB Framework
+- Feature Importance Analysis
 
 ---
 
 # Conclusion
 
-This project demonstrates an end-to-end implementation of a machine learning-based credit risk model using the German Credit dataset.
+This project demonstrates an end-to-end implementation of a Probability of Default (PD) model using machine learning techniques on the German Credit Risk dataset.
 
-The project covers:
-- data preprocessing
-- feature engineering
-- risk modeling
-- performance evaluation
-- business interpretation
+The project provides practical exposure to:
+- credit risk analytics
+- PD modeling
+- machine learning in finance
+- risk evaluation metrics
+- financial data preprocessing
 
-and provides a practical introduction to:
-- Probability of Default Modeling
-- Credit Risk Analytics
-- Financial Machine Learning
+and demonstrates how machine learning can support modern credit risk assessment frameworks.
 
 ---
 
